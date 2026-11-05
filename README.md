@@ -1,2 +1,1089 @@
-# brujula-blox-fruits.
-un ayudante de blox fruits sin haks consejos ayudas etc.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brújula del Tercer Mar - Blox Fruits</title>
+<style>
+:root{
+  --bg:#071426;
+  --card:rgba(12, 31, 51, 0.92);
+  --ink:#e8f4f8;
+  --mute:#8db0c7;
+  --line:#1a4266;
+  --sea:#3bc6f0;
+  --gold:#ffd000;
+  --goldink:#2b2000;
+  --ok:#2ed573;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#05101f;
+    --card:rgba(10, 26, 43, 0.94);
+    --ink:#e8f4f8;
+    --mute:#8db0c7;
+    --line:#153757;
+    --sea:#3bc6f0;
+    --gold:#ffd000;
+    --goldink:#2b2000;
+    --ok:#2ed573;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#05101f;
+  --card:rgba(10, 26, 43, 0.94);
+  --ink:#e8f4f8;
+  --mute:#8db0c7;
+  --line:#153757;
+  --sea:#3bc6f0;
+  --gold:#ffd000;
+  --goldink:#2b2000;
+  --ok:#2ed573;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font: 16px/1.5 "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 50% 15%, rgba(59, 198, 240, 0.15) 0%, transparent 65%),
+    radial-gradient(circle at 20% 80%, rgba(255, 208, 0, 0.08) 0%, transparent 50%),
+    linear-gradient(to right, rgba(59, 198, 240, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 198, 240, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+  background-attachment: fixed;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: 
+    radial-gradient(circle at 50% 50%, transparent 40%, rgba(5, 16, 31, 0.8) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+main {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+h1 {
+  font-size: 28px;
+  margin: 6px 0 4px;
+  letter-spacing: -0.3px;
+  color: var(--gold);
+  text-shadow: 0 0 16px rgba(255, 208, 0, 0.4);
+  text-align: center;
+}
+
+.sub {
+  color: var(--mute);
+  margin: 0 0 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+nav button {
+  flex: 1 1 30%;
+  padding: 10px 4px;
+  border: 2px solid var(--line);
+  background: rgba(16, 38, 61, 0.85);
+  backdrop-filter: blur(6px);
+  color: var(--ink);
+  border-radius: 12px;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+nav button:hover {
+  border-color: var(--sea);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 198, 240, 0.25);
+}
+
+nav button[aria-selected="true"] {
+  background: linear-gradient(135deg, var(--gold) 0%, #e6a100 100%);
+  color: var(--goldink);
+  border-color: var(--gold);
+  box-shadow: 0 0 14px rgba(255, 208, 0, 0.4);
+}
+
+section { display: none; }
+section.on { display: block; }
+
+.card {
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.card h2 {
+  font-size: 18px;
+  margin: 0 0 12px;
+  color: var(--sea);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card h2::before {
+  content: "⚔️";
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--mute);
+  margin: 8px 0 3px;
+}
+
+input[type=number] {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: rgba(5, 16, 31, 0.85);
+  color: var(--ink);
+  font: inherit;
+  font-size: 17px;
+  transition: border-color 0.2s;
+}
+
+input:focus-visible, button:focus-visible {
+  outline: 3px solid var(--sea);
+  outline-offset: 2px;
+  border-color: var(--sea);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.res {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(5, 16, 31, 0.9);
+  border-left: 6px solid var(--gold);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+}
+
+.big {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--gold);
+}
+
+.small {
+  font-size: 13px;
+  color: var(--mute);
+}
+
+.isla {
+  border-left: 6px solid var(--sea);
+  padding-left: 12px;
+}
+
+.isla b {
+  font-size: 20px;
+  color: var(--sea);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+td, th {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+th {
+  color: var(--mute);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.me td {
+  background: rgba(59, 198, 240, 0.15);
+  font-weight: 800;
+  color: var(--gold);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  color: var(--ink);
+}
+
+li input {
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  accent-color: var(--ok);
+  flex: none;
+}
+
+li input:checked+span {
+  text-decoration: line-through;
+  color: var(--mute);
+}
+
+.prog {
+  height: 10px;
+  background: rgba(5, 16, 31, 0.85);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 4px 0 8px;
+  border: 1px solid var(--line);
+}
+
+.prog i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #1f8a5b, var(--ok));
+  width: 0;
+  transition: width .25s;
+}
+
+.aviso {
+  font-size: 12.5px;
+  color: var(--mute);
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+.boss {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.boss b {
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(5, 16, 31, 0.8);
+  border: 1px solid var(--line);
+  margin-left: 6px;
+}
+
+.chip.si {
+  background: var(--ok);
+  color: #000;
+  border-color: var(--ok);
+}
+
+ul.pl li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+ul.pl li b {
+  color: var(--sea);
+}
+
+.b {
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin: 8px 0;
+  white-space: pre-wrap;
+  line-height: 1.45;
+  font-size: 15px;
+}
+
+.b.u {
+  background: var(--gold);
+  color: var(--goldink);
+  margin-left: 28px;
+  font-weight: 600;
+}
+
+.b.a {
+  background: rgba(5, 16, 31, 0.9);
+  border: 1px solid var(--line);
+  margin-right: 28px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.chips button, .send button {
+  padding: 9px 12px;
+  border: 2px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 20px;
+  font: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.send {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.send input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: rgba(5, 16, 31, 0.9);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+}
+
+.send button {
+  border-radius: 10px;
+  background: var(--gold);
+  color: var(--goldink);
+  border-color: var(--gold);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.send button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+#menu {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<main>
+<h1>🏴‍☠️ Brújula del Tercer Mar 🌊</h1>
+<p class="sub">Tu ayudante para Blox Fruits. Sin trampas: solo cuentas y guías.</p>
+<nav role="tablist">
+<button role="tab" aria-selected="true" data-t="calc">Calculadora</button>
+<button role="tab" aria-selected="false" data-t="isla">Isla y quest</button>
+<button role="tab" aria-selected="false" data-t="quests">Quests y mapa</button>
+<button role="tab" aria-selected="false" data-t="jefes">Jefes</button>
+<button role="tab" aria-selected="false" data-t="mar">Mar y tips</button>
+<button role="tab" aria-selected="false" data-t="frutas">Frutas y razas</button>
+<button role="tab" aria-selected="false" data-t="armas">Armas y estilos</button>
+<button role="tab" aria-selected="false" data-t="raids">Raids y fragmentos</button>
+<button role="tab" aria-selected="false" data-t="ia">Preguntale a la IA</button>
+<button role="tab" aria-selected="false" data-t="maestria">Maestría</button>
+<button role="tab" aria-selected="false" data-t="haki">Haki</button>
+<button role="tab" aria-selected="false" data-t="codigos">Códigos</button>
+<button role="tab" aria-selected="false" data-t="mares">Mares 1 y 2</button>
+<button role="tab" aria-selected="false" data-t="tienda">Tienda y stock</button>
+<button role="tab" aria-selected="false" data-t="mirage">Mirage y eventos</button>
+<button role="tab" aria-selected="false" data-t="pases">Game Passes</button>
+<button role="tab" aria-selected="false" data-t="segur">Seguridad</button>
+<button role="tab" aria-selected="false" data-t="tipos">Tipos de frutas</button>
+<button role="tab" aria-selected="false" data-t="precios">Precios de frutas</button>
+<button role="tab" aria-selected="false" data-t="barcos">Barcos</button>
+<button role="tab" aria-selected="false" data-t="bounty">Bounty y PvP</button>
+<button role="tab" aria-selected="false" data-t="elite">Elite y Yama</button>
+<button role="tab" aria-selected="false" data-t="huesos">Huesos</button>
+<button role="tab" aria-selected="false" data-t="islas">Islas especiales</button>
+<button role="tab" aria-selected="false" data-t="dojo">Dragon Dojo</button>
+<button role="tab" aria-selected="false" data-t="glosario">Glosario</button>
+<button role="tab" aria-selected="false" data-t="plan">Mi plan</button>
+<button role="tab" aria-selected="false" data-t="lista">Checklists</button>
+</nav>
+
+<section id="calc" class="on">
+<div class="card"><h2>¿Cuánto falta para subir de nivel?</h2>
+<div class="row"><div><label for="n1">Mi nivel</label><input id="n1" type="number" value="1915" inputmode="numeric"></div>
+<div><label for="n2">Nivel meta</label><input id="n2" type="number" value="2850" inputmode="numeric"></div></div>
+<div class="row"><div><label for="rn">Niveles por hora</label><input id="rn" type="number" value="50" inputmode="numeric"></div>
+<div><label for="hd">Horas por día</label><input id="hd" type="number" value="2" step="0.5" inputmode="decimal"></div></div>
+<div class="res" id="r1"></div></div>
+
+<div class="card"><h2>¿Cuánto falta para juntar Beli?</h2>
+<div class="row"><div><label for="b1">Mi Beli</label><input id="b1" type="number" value="2000000" inputmode="numeric"></div>
+<div><label for="b2">Beli meta</label><input id="b2" type="number" value="5000000" inputmode="numeric"></div></div>
+<div class="row"><div><label for="bh">Beli por hora</label><input id="bh" type="number" value="150000" inputmode="numeric"></div>
+<div><label for="bd">Horas por día</label><input id="bd" type="number" value="2" step="0.5" inputmode="decimal"></div></div>
+<div class="res" id="r2"></div></div>
+<p class="aviso">Medí tu ritmo real: anotá tu nivel y tu Beli, jugá una hora y poné acá lo que subió. El nivel máximo cambia con las actualizaciones: las fuentes dicen 2800, 2850 o 3000, así que cambiá el nivel meta según lo que veas en el juego.</p>
+</section>
+
+<section id="isla">
+<div class="card"><h2>¿A qué isla voy?</h2>
+<label for="nv">Mi nivel</label><input id="nv" type="number" value="1915" inputmode="numeric">
+<div class="res isla" id="ri"></div></div>
+<div class="card"><h2>Mapa de niveles</h2><table id="tb"></table>
+<p class="aviso">Los rangos son aproximados y cambian con las actualizaciones. Mirá siempre qué nivel pide el NPC de la quest en el juego.</p></div>
+</section>
+
+<section id="lista">
+<div class="card"><h2>Instinct V2</h2><div class="small" id="p1"></div><div class="prog"><i id="g1"></i></div><ul id="l1"></ul></div>
+<div class="card"><h2>Raza Ángel: camino a la V4</h2><div class="small" id="p2"></div><div class="prog"><i id="g2"></i></div><ul id="l2"></ul>
+<p class="aviso">Pasos según guías del juego. Confirmalos con los NPC, porque pueden cambiar.</p></div>
+</section>
+
+<section id="quests">
+<div class="card"><h2>Quests del Tercer Mar</h2>
+<p class="small">Se marca la quest que te toca según tu nivel de la calculadora.</p>
+<table id="tq"></table>
+<p class="aviso">Estas quests son las de las islas principales hasta el Castillo Embrujado. Las del Mar de las Golosinas no las encontré con claridad, así que mirá los niveles en el NPC. Los niveles pueden variar según la fuente.</p></div>
+<div class="card"><h2>Islas y NPCs importantes</h2>
+<ul class="pl">
+<li><b>Port Town (1500 a 1575):</b> es la isla de inicio. Tiene vendedores de frutas, botes y botes de lujo.</li>
+<li><b>Hydra Island (1575 a 1700):</b> tiene el Arena Trainer, el Dragon Tamer, el Dragon Dojo y vendedores de botes. Una guía la marca como de las mejores para ganar XP por hora.</li>
+<li><b>Great Tree (1700 a 1775):</b> tiene al Crew Captain y al Master of Auras (o Enchanter, según la fuente).</li>
+<li><b>Floating Turtle (1775 a 2000):</b> la tuya ahora. Tiene muchos NPCs de quests, la Mansión y al Ancient Monk.</li>
+<li><b>Castle on the Sea:</b> zona segura sin nivel mínimo. Ahí están la Mysterious Scientist (raids) y el Elite Hunter.</li>
+<li><b>Haunted Castle (1975 a 2075):</b> tiene al Death King, a Uzoth y a Gravestone. Es bueno para juntar huesos.</li>
+<li><b>Sea of Treats (2075 a unos 2450):</b> Cake Land, chocolate y caramelo. Es donde aparecen el Cake Prince y el Dough King.</li>
+<li><b>Tiki Outpost (desde unos 2450):</b> el tramo final conocido, hasta cerca de 2600 según las guías.</li>
+</ul></div>
+<div class="card"><h2>Otras islas y eventos</h2>
+<ul class="pl">
+<li>Treasure Island, Kitsune Island, Mirage Island, Frozen Dimension y Prehistoric Island.</li>
+<li>La Isla Espejo (Mirage) aparece de noche y es clave para la V4 de las razas.</li>
+<li>La Dimensión Congelada es el escenario del Leviathan.</li>
+</ul>
+<p class="aviso">Para entrar al Tercer Mar las guías piden nivel 1500 y completar la quest del Rey Cabeza Roja (King Red Head), o bien vencer a Don Swan y bajar a la mitad la vida de Rip Indra. Según la fuente cambia un poco.</p></div>
+</section>
+
+<section id="jefes">
+<div class="card"><h2>Jefes del Tercer Mar</h2>
+<label for="nj">Mi nivel</label><input id="nj" type="number" value="1915" inputmode="numeric">
+<div id="bj"></div>
+<p class="aviso">Niveles y premios según guías y wikis del juego. Los jefes grandes conviene hacerlos en equipo.</p></div>
+<div class="card"><h2>Cuántos niveles da cada jefe</h2><table id="tl"></table>
+<p class="aviso">Los jefes dan niveles extra además de Beli y fragmentos, así que ayudan a subir más rápido.</p></div>
+</section>
+
+<section id="mar">
+<div class="card"><h2>Bestias marinas y eventos</h2>
+<ul class="pl">
+<li><b>Niveles de peligro del mar (1 a 6):</b> empiezan cuando pasás unas rocas al alejarte de las islas. Cuanto más lejos, más alto el nivel.</li>
+<li><b>Bestia marina:</b> aparece navegando en bote en los niveles de peligro 1 a 6. Da 1 nivel, de 150 a 250 fragmentos y entre 100.000 y 250.000 de Beli (el doble con el pase de doble dinero).</li>
+<li><b>Terrorshark:</b> aparece en los niveles de peligro 2 a 6. Da 1 nivel.</li>
+<li><b>Barco fantasma (Haunted Ship):</b> solo en el nivel de peligro 6.</li>
+<li><b>Leviathan:</b> el evento más difícil. Hay que llegar al nivel de peligro 6 con tu tripulación para encontrar la Dimensión Congelada. Da 5 niveles.</li>
+</ul></div>
+<div class="card"><h2>Tips que sirven</h2>
+<ul class="pl">
+<li>Invertí en defensa y vida para aguantar a las bestias marinas.</li>
+<li>Navegá en equipo: se juntan más premios y es más seguro.</li>
+<li>La Isla Espejo tiene cofres de fragmentos.</li>
+<li>Los cofres del Tercer Mar pagan unos 10.000 de Beli los de diamante y unos 5.000 los de oro.</li>
+<li>Para armar raids se pide nivel 1.100 o más y comprar microchips en Castle on the Sea.</li>
+<li>Los fragmentos sirven para estilos de pelea, cambiar de raza y más.</li>
+<li><b>Seguridad:</b> nunca des tu contraseña, ni uses scripts o páginas que prometen subir de nivel por vos. Te pueden robar o banear la cuenta.</li>
+</ul>
+<p class="aviso">Los premios y porcentajes cambian con las actualizaciones. Fijate siempre en el juego.</p></div>
+</section>
+
+<section id="frutas">
+<div class="card"><h2>Mejores frutas para farmear</h2>
+<ul class="pl">
+<li><b>Buddha:</b> la más recomendada para subir de nivel. Tiene mucho alcance, aguanta golpes y sirve para raids. Cuesta unos 1.200.000 de Beli.</li>
+<li><b>Magma:</b> muy buena para daño en área, jefes y eventos de mar. Cuesta alrededor de un millón.</li>
+<li><b>Light:</b> rápida para moverse y barata, unos 650.000 de Beli. Mejor en los primeros mares.</li>
+<li><b>Dragon:</b> una guía de julio de 2026 la marca como la mejor para farmear en el Tercer Mar, pero es difícil de conseguir.</li>
+<li><b>Dough:</b> brilla en raids y combos de PvP, y cuesta unos 2.800.000 de Beli. Despertada rinde más.</li>
+<li><b>Magnet:</b> la fruta mítica nueva de septiembre de 2026. Los rankings la ponen alto, pero puede cambiar.</li>
+</ul>
+<p class="aviso">Despertar la fruta mejora mucho el farmeo (Buddha, Dough, Magma y otras). Una guía sugiere para farmear subir primero Melee y Defensa. Los rankings cambian con cada actualización, así que usalos como guía y no como regla.</p></div>
+<div class="card"><h2>Stats: cómo repartir los puntos</h2>
+<ul class="pl">
+<li>Ganás <b>3 puntos de stats por nivel</b>. Podés ponerlos en Melee, Defensa, Espada, Arma o Fruta.</li>
+<li>Lo máximo que podés poner en un stat es igual al nivel máximo del juego.</li>
+<li><b>Melee:</b> sube el daño de estilos de pelea y la energía. <b>Defensa:</b> sube la vida. <b>Espada, Arma y Fruta:</b> suben el daño de cada una.</li>
+<li>Regla simple: elegí <b>un solo stat de daño</b> y mantené la Defensa en la mitad de ese stat, más o menos.</li>
+<li>Para farmear con fruta: Melee, Defensa y Fruta son lo más usado. Con Buddha, los golpes básicos dependen del Melee, no de la fruta.</li>
+<li>Con una fruta elemental de golpes básicos (como Light o Ice), una guía sugiere unos 25% en Melee y Defensa y el resto en Fruta.</li>
+</ul>
+<p class="aviso">Evitá repartir los puntos entre todos los stats, porque queda todo flojo. Las guías no coinciden en los números exactos, así que usalos de orientación.</p></div>
+<div class="card"><h2>Novedades y rumores</h2>
+<ul class="pl">
+<li>El nivel máximo subió muchas veces. Hoy las fuentes dicen 2800, 2850 o 3000, según la actualización. Fijate cuál es en tu juego.</li>
+<li>Hubo una actualización con pesca y retoques a frutas. La siguiente se espera en la segunda mitad de 2026.</li>
+<li>Se habla de un Cuarto Mar para diciembre de 2026, pero es un rumor y no lo encontré confirmado oficialmente.</li>
+</ul></div>
+<div class="card"><h2>Razas</h2>
+<ul class="pl">
+<li><b>Human:</b> enfocada en daño.</li>
+<li><b>Rabbit (Mink):</b> la más rápida, muy buena para farmear.</li>
+<li><b>Shark (Fishman):</b> defensa y agua.</li>
+<li><b>Angel:</b> curación, saltos y control. Es la tuya.</li>
+<li><b>Ghoul:</b> regenera vida mientras peleás.</li>
+<li><b>Cyborg:</b> presión en área.</li>
+<li><b>Draco:</b> se desbloquea con su propio camino.</li>
+</ul>
+<p class="aviso">Human, Rabbit, Shark y Angel se consiguen al empezar o con rerolls. Ghoul, Cyborg y Draco tienen su propio camino de desbloqueo. Para pasar a V2 hay que haber hecho la quest del Coliseo. La V4 se hace en el Templo del Tiempo, con la Isla Espejo. Los rankings de razas cambian según la guía.</p></div>
+</section>
+
+<section id="armas">
+<div class="card"><h2>Espadas del Tercer Mar</h2>
+<ul class="pl">
+<li><b>Cursed Dual Katana (CDK):</b> la más fuerte según las guías. Se hace con Yama y Tushita: pide 350 de maestría en las dos, nivel 2200 o más y las pruebas de los pergaminos.</li>
+<li><b>Yama:</b> se consigue con unas 20 a 30 quests de Elite o Player Hunter. Muy buena para moverse.</li>
+<li><b>Tushita:</b> se obtiene con un puzzle entre Castle on the Sea, Hydra Island y la Tortuga Flotante. Pide nivel 2000 y vencer a Longma.</li>
+<li><b>Hallow Scythe:</b> la suelta el Soul Reaper en el Castillo Embrujado, con poca probabilidad (cerca de 5%). Buena contra grupos.</li>
+<li><b>Buddy Sword:</b> la suelta la Cake Queen, entre 5% y 10%.</li>
+<li><b>Spikey Trident:</b> la sueltan el Cake Prince (5%) y el Dough King (15%).</li>
+<li><b>Canvander:</b> la suelta Beautiful Pirate en la Tortuga Flotante (5%).</li>
+<li><b>Dark Dagger:</b> la da Rip Indra (forma verdadera).</li>
+<li><b>Shark Anchor:</b> la suelta el Terrorshark (1%).</li>
+<li><b>True Triple Katana (Segundo Mar):</b> se paga 2.000.000 de Beli al Mysterious Man y pide 300 de maestría en Wando, Shisui y Saddi. Una lista la pone como la mejor para farmear.</li>
+</ul>
+<p class="aviso">Las probabilidades y los pasos cambian con las actualizaciones. Las espadas buenas casi nunca se compran con Beli directo.</p></div>
+
+<div class="card"><h2>Estilos de pelea</h2>
+<ul class="pl">
+<li><b>Dark Step:</b> 150.000 de Beli en Pirate Village (Primer Mar). Es la base para Death Step.</li>
+<li><b>Sharkman Karate:</b> 2.500.000 de Beli, 5.000 fragmentos y la Water Key (la suelta Tide Keeper). Lo enseña Daigrock en Forgotten Island. Va muy bien con Buddha para farmear.</li>
+<li><b>Electric Claw:</b> en la Tortuga Flotante. Pide 400 de maestría en Electric.</li>
+<li><b>Dragon Talon:</b> lo enseña Uzoth en Hydra Island. Pide Fire Essence (Death King) y 400 de maestría en Dragon Breath.</li>
+<li><b>Sanguine Art:</b> lo enseña Shafi en Tiki Outpost y no pide maestría.</li>
+<li><b>Godhuman:</b> el más difícil. Pide 400 de maestría en Superhuman, Death Step, Electric Claw, Sharkman Karate y Dragon Talon, más 5.000.000 de Beli, 5.000 fragmentos y materiales. Lo da el Ancient Monk en un árbol hueco de la Tortuga Flotante. No es el mejor para farmear mobs.</li>
+</ul>
+<p class="aviso">Tener todos los estilos cuesta unos 25 millones de Beli y unos 31.500 fragmentos, además de subir la maestría. Para farmear, las guías recomiendan estilos rápidos como Superhuman o Sharkman Karate.</p></div>
+
+<div class="card"><h2>Accesorios</h2>
+<ul class="pl">
+<li><b>Pale Scarf:</b> la dan el Cake Prince y el Dough King (basta con hacerles el 10% de su vida). Una de las más recomendadas.</li>
+<li><b>Swan Glasses:</b> los suelta Don Swan, en el Segundo Mar.</li>
+<li><b>Dark Coat:</b> del Segundo Mar, muy rara. Buena para usuarios de fruta.</li>
+<li><b>Tomoe Ring:</b> recomendado para usuarios de fruta.</li>
+<li><b>Valkyrie Helm:</b> la da Rip Indra (forma verdadera).</li>
+<li><b>Musketeer Hat:</b> viene de la quest del Ciudadano. La necesitás para el Instinct V2.</li>
+</ul>
+<p class="aviso">Hay unos 70 accesorios en el juego. Algunos se compran a NPCs con anillo verde, y otros salen de jefes, quests o crafteo. Solo uno se usa a la vez.</p></div>
+</section>
+
+<section id="raids">
+<div class="card"><h2>Cómo hacer una raid</h2>
+<ul class="pl">
+<li>Para hostear hace falta nivel 1.100 o más. Si no, te podés unir a la raid de otro.</li>
+<li>La Mysterious Scientist está en el Castillo en el Mar (Castle on the Sea), en una sala a la derecha de la entrada principal.</li>
+<li>El microchip básico cuesta 100.000 de Beli o una fruta física.</li>
+<li>El microchip avanzado (Dough y Phoenix) cuesta 1.000 fragmentos o una fruta de más de un millón de Beli.</li>
+<li>Lo ideal es ir en equipo de 4. Buddha es la fruta más recomendada para aguantar las oleadas.</li>
+<li>Cada raid da entre 250 y más de 1.500 fragmentos, según el tipo.</li>
+</ul></div>
+
+<div class="card"><h2>Despertar tu fruta</h2>
+<ul class="pl">
+<li>Después de la raid, gastás fragmentos con la Mysterious Entity para despertar cada habilidad.</li>
+<li>Costo total aproximado: Buddha y Magma, unos 14.500 fragmentos. Dough, unos 18.500.</li>
+<li>Los movimientos cuestan más cuanto más avanzados: una guía menciona 500 fragmentos para el primero y 3.000 para el segundo.</li>
+<li>El Awakenings Expert (en la Mansión, Tercer Mar) revierte las habilidades despertadas gratis.</li>
+</ul></div>
+
+<div class="card"><h2>Cómo juntar fragmentos</h2>
+<ul class="pl">
+<li><b>Raids:</b> la forma más eficiente.</li>
+<li><b>Bestias marinas:</b> 150 fragmentos cada una en el Tercer Mar.</li>
+<li><b>Piratas de élite:</b> son enemigos de nivel 1.750. Hablá con el Elite Hunter en Castle on the Sea.</li>
+<li><b>Dough King:</b> da 2.000 fragmentos.</li>
+<li><b>Cofres de fragmentos:</b> están en la Isla Espejo y en las islas del tesoro.</li>
+<li><b>Random Surprise:</b> se cambia por huesos con el Death King en el Castillo Embrujado y a veces da entre 100 y 300 fragmentos.</li>
+</ul>
+<p class="aviso">Los fragmentos sirven para estilos de pelea, despertar frutas, cambiar de raza y más. Los costos pueden variar con las actualizaciones.</p></div>
+</section>
+
+<section id="ia">
+<div class="card"><h2>Preguntale a la IA</h2>
+<p class="small" id="iaMsg">Hacele cualquier pregunta sobre Blox Fruits: islas, jefes, frutas, razas, armas y más.</p>
+<div id="iaBox">
+<div class="chips" id="iaChips"></div>
+<div id="iaChat"></div>
+<div class="send" id="iaForm"><input id="iaQ" type="text" placeholder="Escribí tu pregunta" aria-label="Tu pregunta" maxlength="500"><button id="iaGo" type="button">Preguntar</button><button id="iaStop" type="button" style="display:none">Parar</button></div>
+</div>
+<p class="aviso">La IA puede equivocarse, sobre todo con cosas que cambian en las actualizaciones. Confirmá lo importante con el NPC o en el juego. Nunca compartas contraseñas ni datos personales.</p></div>
+</section>
+
+<section id="maestria">
+<div class="card"><h2>Qué es la maestría</h2>
+<ul class="pl">
+<li>Cada fruta, espada y estilo de pelea tiene su <b>propia maestría</b>. Se sube usando sus habilidades contra enemigos.</li>
+<li>Con más maestría desbloqueás habilidades nuevas y más daño. Muchas cosas la piden, como Godhuman (400) y la CDK (350).</li>
+<li>El nivel del personaje te abre islas, pero la maestría es la que te da poder real.</li>
+</ul></div>
+<div class="card"><h2>Dónde y cómo subirla</h2>
+<ul class="pl">
+<li><b>En el Tercer Mar sube más rápido,</b> porque los enemigos son de mayor nivel. Farmear enemigos muy por debajo de tu nivel rinde poco.</li>
+<li><b>Cake Land:</b> una guía dice que sus NPCs y jefes dan la mayor maestría del juego. El objetivo es el Cake Guard (nivel 2100 o más).</li>
+<li><b>Tortuga Flotante:</b> varias guías la marcan como buen lugar para maestría en el Tercer Mar.</li>
+<li><b>Jefes:</b> la Cake Queen es de las mejores para maestría, según una guía.</li>
+<li><b>El truco del cambio:</b> bajale vida al jefe con tu arma fuerte, cambiá al arma que querés subir y dale el último golpe. Esa arma recibe la maestría del jefe.</li>
+<li><b>Con amigos:</b> pueden turnarse para dar el último golpe y todos suben.</li>
+<li><b>Pase 2x Maestría:</b> existe como game pass (de pago). No hace falta.</li>
+</ul>
+<p class="aviso">Cuidado: no uses scripts de maestría ni de autofarm. Van contra las reglas de Roblox y te pueden banear la cuenta.</p></div>
+</section>
+
+<section id="haki">
+<div class="card"><h2>Tipos de Haki</h2>
+<ul class="pl">
+<li><b>Observación (Ken o Instinct):</b> te avisa de los ataques y te ayuda a esquivar. Se compra al Instinct Teacher, arriba del templo de las Upper Skylands (Primer Mar), según una guía. Se mejora con el uso, esquivando ataques.</li>
+<li><b>Enhancement (Buso o Aura):</b> mejora tus golpes y te sirve contra enemigos que se hacen intangibles. Se aprende en una cueva de Frozen Village con el Ability Teacher.</li>
+<li>Cada Haki tiene una versión V2. Tu Instinct V2 se consigue con el camino que ya tenés en la app (Checklists).</li>
+</ul></div>
+<div class="card"><h2>Colores de Haki</h2>
+<ul class="pl">
+<li>Son <b>cosméticos</b>: cambian el contorno de tu personaje y no dan más ataque ni defensa.</li>
+<li>Hay 10 colores comunes, 3 legendarios, 2 secretos y 2 limitados.</li>
+<li>Los comunes y los legendarios se compran con fragmentos al Master of Auras, que aparece en varios lugares del Segundo y Tercer Mar (por ejemplo en Great Tree).</li>
+<li>Los secretos se consiguen por otros caminos. Por ejemplo, Rainbow Saviour se logra con la cadena de quests del Horned Man.</li>
+</ul>
+<p class="aviso">Hay guías que mencionan otros tipos de Haki, como el del Conquistador, pero no las encontré con claridad. Confirmalo en el juego.</p></div>
+</section>
+
+<section id="codigos">
+<div class="card"><h2>Códigos para canjear</h2>
+<p class="small">Dan cosas gratis dentro del juego, como 2x de experiencia por unos minutos o un reseteo de stats. Las guías de noviembre de 2026 listan estos:</p>
+<ul class="pl">
+<li><b>EASTEREXP:</b> 2x EXP por 20 minutos.</li>
+<li><b>LIGHTNINGABUSE:</b> 2x EXP por 20 minutos.</li>
+<li><b>1LOSTADMIN:</b> 2x EXP por 20 minutos.</li>
+<li><b>KITT_RESET:</b> reseteo de stats.</li>
+</ul>
+<p class="aviso">Ojo: el reseteo de stats te devuelve los puntos y tenés que repartirlos de nuevo, así que usalo solo si querés cambiar tu build.</p></div>
+<div class="card"><h2>Cómo canjearlos y qué cuidar</h2>
+<ul class="pl">
+<li>Se escriben <b>exactamente</b> igual, respetando mayúsculas y minúsculas.</li>
+<li>Se canjean <b>dentro de Blox Fruits</b>. No sirven en la página de códigos de Roblox.</li>
+<li>Los códigos vencen sin avisar. Si uno no funciona, probablemente ya expiró.</li>
+<li>Los códigos de las guías no siempre coinciden entre sí. Probá varios.</li>
+<li><b>Seguridad:</b> los códigos reales son gratis. Si una página te pide tu contraseña o Robux para darte un código, es una estafa.</li>
+<li>Si hay un evento de doble XP, el código se suma encima del evento.</li>
+</ul></div>
+</section>
+
+<section id="mares">
+<div class="card"><h2>Primer Mar (niveles 1 a 700)</h2>
+<table>
+<tr><th>Isla</th><th>Nivel</th></tr>
+<tr><td>Starter Island</td><td>0 a 10</td></tr>
+<tr><td>Jungle</td><td>15 a 30</td></tr>
+<tr><td>Pirate Village</td><td>30 a 60</td></tr>
+<tr><td>Desert</td><td>60 a 90</td></tr>
+<tr><td>Frozen Village</td><td>90 a 120</td></tr>
+<tr><td>Marine Fortress</td><td>120 a 150</td></tr>
+<tr><td>Skylands</td><td>150 a 210</td></tr>
+<tr><td>Prison</td><td>190 a 275</td></tr>
+<tr><td>Colosseum</td><td>225 a 300</td></tr>
+<tr><td>Magma Village</td><td>300 a 450</td></tr>
+<tr><td>Underwater City</td><td>375 a 450</td></tr>
+<tr><td>Fountain City</td><td>625 a 700</td></tr>
+</table>
+<p class="aviso">Una guía dice que Pirate Village, Frozen Village, Skylands y Magma Village son de las islas más eficientes del Primer Mar. Para pasar al Segundo Mar hace falta nivel 700 y completar la quest del Military Detective en la Prison.</p></div>
+<div class="card"><h2>Segundo Mar (niveles 700 a 1500)</h2>
+<table>
+<tr><th>Isla</th><th>Nivel</th></tr>
+<tr><td>Kingdom of Rose</td><td>700 a 850</td></tr>
+<tr><td>Cafe</td><td>zona segura</td></tr>
+<tr><td>Green Zone</td><td>875 a 925</td></tr>
+<tr><td>Graveyard</td><td>950 a 975</td></tr>
+<tr><td>Snow Mountain</td><td>1000 a 1050</td></tr>
+<tr><td>Dark Arena (Darkbeard)</td><td>1000</td></tr>
+<tr><td>Cursed Ship</td><td>1000 a 1325</td></tr>
+<tr><td>Hot and Cold</td><td>1100 a 1200</td></tr>
+<tr><td>Ice Castle</td><td>1350 a 1400</td></tr>
+<tr><td>Forgotten Island</td><td>1425 a 1475</td></tr>
+</table>
+<p class="aviso">La Mansión de Don Swan está en Kingdom of Rose. En Hot and Cold está el laboratorio de las raids. Para ir al Tercer Mar hace falta nivel 1500 y completar su quest.</p></div>
+</section>
+
+<section id="tienda">
+<div class="card"><h2>El vendedor de frutas</h2>
+<ul class="pl">
+<li>El stock se renueva <b>cada 4 horas</b>, a las 00:00, 04:00, 08:00, 12:00, 16:00 y 20:00 en hora UTC.</li>
+<li>En hora de Uruguay (UTC menos 3) eso es a las 21:00, 01:00, 05:00, 09:00, 13:00 y 17:00.</li>
+<li>Cada renovación muestra unas 3 frutas al azar, que se compran con Beli o Robux.</li>
+<li>Hay vendedores en las islas de inicio, en Kingdom of Rose y en zonas seguras del Tercer Mar.</li>
+<li>Si comprás una fruta, reemplaza el poder de tu fruta actual. Para guardarla para cambiar, tiene que ser una fruta física del Gacha o del suelo.</li>
+</ul></div>
+<div class="card"><h2>Otras formas de conseguir frutas</h2>
+<ul class="pl">
+<li><b>Gacha:</b> el Blox Fruit Dealer Cousin te da una fruta al azar por Beli. Hace falta nivel 50, y se puede guardar.</li>
+<li><b>Frutas en el mapa:</b> aparecen debajo de árboles, cada rato (alrededor de una hora, según la fuente). Hay servidores con mejores chances que otros.</li>
+<li><b>Mirage Island:</b> el vendedor avanzado renueva su stock cada 2 horas y tiene frutas legendarias y míticas.</li>
+<li><b>Intercambio:</b> podés cambiar una fruta por otra de valor parecido con otro jugador.</li>
+</ul>
+<p class="aviso">Las guías no coinciden si el stock es el mismo en todos los servidores. Fijate en el reloj de tu juego. Algunos precios de referencia: Light unos 650.000, Buddha unos 1.200.000 y Dough unos 2.800.000 de Beli.</p></div>
+</section>
+
+<section id="mirage">
+<div class="card"><h2>Mirage Island</h2>
+<ul class="pl">
+<li>Es una isla que aparece de forma aleatoria en el Tercer Mar.</li>
+<li>La condición que más se nombra es la <b>luna llena</b>. Una guía dice que la niebla también aumenta mucho las chances.</li>
+<li>Según una fuente, aparece cada unas 4 horas y se queda alrededor de 4 horas.</li>
+<li>Ahí está el vendedor avanzado de frutas, con stock cada 2 horas.</li>
+<li>Tiene cofres de fragmentos y el engranaje azul para la V4 de tu raza.</li>
+</ul>
+<p class="aviso">Los tiempos cambian con las actualizaciones y las fuentes no siempre coinciden. Si en el servidor hay un aviso de Mirage, aprovechalo.</p></div>
+<div class="card"><h2>Eventos para aprovechar</h2>
+<ul class="pl">
+<li><b>Doble XP:</b> mirá si hay evento activo antes de farmear fuerte.</li>
+<li><b>Bestias marinas y eventos de mar:</b> dan Beli y fragmentos.</li>
+<li><b>Raids:</b> las mejores para fragmentos, con 4 jugadores.</li>
+<li><b>Eventos de temporada:</b> cada tanto hay eventos con recompensas, por ejemplo el de Pascua que dio un código de 2x EXP.</li>
+</ul></div>
+</section>
+
+<section id="pases">
+<div class="card"><h2>Game Passes (se pagan con Robux)</h2>
+<ul class="pl">
+<li><b>2x Money:</b> duplica el Beli de NPCs y quests, pero no el de los cofres. Unos 450 Robux.</li>
+<li><b>2x Mastery:</b> duplica la maestría que ganan tus armas y frutas. Unos 450 Robux.</li>
+<li><b>2x Boss Drops:</b> duplica la chance de que los jefes suelten sus ítems. Unos 350 Robux.</li>
+<li><b>Fast Boats:</b> te da los botes Miracle y The Sentinel, los más rápidos. Unos 350 Robux.</li>
+<li><b>Dark Blade:</b> te da la espada mítica Dark Blade. Unos 1.200 Robux.</li>
+<li><b>Fruit Notifier:</b> te avisa cuando aparece una fruta. Es el más caro, unos 2.700 Robux.</li>
+</ul>
+<p class="aviso">Los precios cambian según la fuente. Una guía ve como los más útiles a 2x Mastery y 2x Money.</p></div>
+<div class="card"><h2>Importante antes de gastar</h2>
+<ul class="pl">
+<li><b>No hace falta comprar nada para llegar al máximo.</b> Los códigos, los eventos de doble XP y la maestría con amigos ayudan gratis.</li>
+<li>Antes de gastar Robux, pedí permiso a tus papás. Es dinero real.</li>
+<li>Comprá solo dentro del juego. Nadie serio te va a pedir Robux por fuera.</li>
+</ul></div>
+</section>
+
+<section id="segur">
+<div class="card"><h2>Cuidá tu cuenta</h2>
+<ul class="pl">
+<li>Nunca compartas tu contraseña, ni siquiera con amigos o con alguien que dice ser admin.</li>
+<li>Desconfiá de páginas, videos o personas que prometen subirte de nivel, darte frutas gratis o regalarte Robux. Casi siempre son estafas.</li>
+<li>No uses scripts, autofarm ni programas de trampa: van contra las reglas y pueden banearte la cuenta.</li>
+<li>Si algo te hace sentir incómodo o te asusta, avisale a un adulto de confianza.</li>
+</ul></div>
+<div class="card"><h2>Al comerciar</h2>
+<ul class="pl">
+<li>Pensá antes de aceptar. Si te apuran, mejor que no.</li>
+<li>Que el trueque sea justo: el valor de las frutas cambia según el mercado.</li>
+<li>Si alguien te pide que “dejes una fruta de regalo” o te pide cosas raras, no aceptes.</li>
+<li>No pases datos personales (dirección, escuela, teléfono).</li>
+</ul></div>
+<div class="card"><h2>Jugá con ganas, sin quemarte</h2>
+<ul class="pl">
+<li>Hacé una pausa cada tanto: tomá agua y estirá las manos y la espalda.</li>
+<li>Descansá la vista mirando algo lejos.</li>
+<li>Jugá con tus amigos en llamada: se pasa más rápido y es más lindo.</li>
+<li>Es mejor jugar menos y con ganas que mucho y cansado.</li>
+</ul></div>
+</section>
+
+<section id="tipos">
+<div class="card"><h2>Los 3 tipos de frutas</h2>
+<ul class="pl">
+<li><b>Natural (Paramecia):</b> poderes variados, como velocidad, fuerza o control.</li>
+<li><b>Elemental (Logia):</b> fuego, hielo, luz y similares. Los golpes físicos sin Haki de Enhancement no los dañan.</li>
+<li><b>Beast (Zoan):</b> te transforman en una bestia, con más tamaño, daño y defensa.</li>
+</ul></div>
+<div class="card"><h2>Las 5 rarezas</h2>
+<ul class="pl">
+<li><b>Común:</b> baratas y flojas.</li>
+<li><b>Poco común:</b> un poco mejores, todavía baratas.</li>
+<li><b>Rara:</b> precios medios.</li>
+<li><b>Legendaria:</b> caras y poderosas.</li>
+<li><b>Mítica:</b> las más raras y caras. Su chance de aparecer es menor al 1%.</li>
+</ul>
+<p class="aviso">Hay entre 39 y 42 frutas, según la fuente, y solo 12 se pueden despertar. La rareza y el tipo son cosas distintas: una fruta mítica puede ser Natural, Elemental o Beast.</p></div>
+<div class="card"><h2>Despertar: costo en fragmentos</h2>
+<ul class="pl">
+<li>Flame, Ice, Sand, Dark, Light, Magma, Buddha y Rumble: unos 14.500.</li>
+<li>Quake: unos 17.000.</li>
+<li>Dough y Phoenix: unos 18.500.</li>
+</ul></div>
+</section>
+
+<section id="precios">
+<div class="card"><h2>Precios de frutas en Beli</h2>
+<table id="tpf"></table>
+<p class="aviso">Son precios de referencia que dan las guías. Las frutas míticas más nuevas (como Kitsune, Dragon o Leopard) cuestan bastante más y las mejores solo aparecen a veces en el vendedor. Mirá el precio real en el juego.</p></div>
+</section>
+
+<section id="barcos">
+<div class="card"><h2>Barcos</h2>
+<table id="tbt"></table>
+<p class="aviso">Velocidades aproximadas en el Tercer Mar. Los precios de Sloop y Brigade son para piratas o marines, según el caso.</p></div>
+<div class="card"><h2>Datos útiles</h2>
+<ul class="pl">
+<li>The Sentinel es el más rápido y el Miracle va segundo. Los dos vuelan y pasan por encima de las rocas, pero piden el pase Fast Boats.</li>
+<li>El Beast Hunter es el único que se hace con receta de crafteo. Tiene un arpón para conseguir el corazón del Leviathan.</li>
+<li>El Guardian y el Lantern son tanques con muchos cañones. Sirven para eventos de mar.</li>
+<li>El Sleigh solo aparece en el evento de Navidad.</li>
+<li>El Dinghy gratis alcanza bien para empezar.</li>
+</ul></div>
+</section>
+
+<section id="bounty">
+<div class="card"><h2>Bounty y Honor</h2>
+<ul class="pl">
+<li>Los <b>piratas</b> ganan Bounty y los <b>marines</b> ganan Honor. Funcionan igual y no se suman entre sí.</li>
+<li>Se sube derrotando NPCs, jefes y jugadores. Si te derrotan, perdés puntos.</li>
+<li>Al llegar a 2,5 millones ya no sumás por NPCs, solo por jugadores.</li>
+<li>Cada 500.000 puntos te dan mejoras para el PvP contra jugadores (no contra NPCs).</li>
+<li>El máximo es de 30 millones, según una guía.</li>
+</ul></div>
+<div class="card"><h2>Títulos</h2>
+<ul class="pl">
+<li><b>Pirate Hunter y Bounty Hunter:</b> 5 millones de Bounty u Honor.</li>
+<li><b>Warlord of the Sea:</b> 10 millones de Bounty.</li>
+<li><b>Fleet Admiral:</b> 20 millones de Honor.</li>
+</ul>
+<p class="aviso">El PvP está disponible desde el nivel 20 y se reactiva solo unos 15 minutos después de morir. Es una parte opcional del juego: si no te gusta, podés farmear tranquilo. Los marines tienen botes más baratos y los piratas pueden armar crews.</p></div>
+</section>
+
+<section id="elite">
+<div class="card"><h2>Elite Hunter y Player Hunter</h2>
+<ul class="pl">
+<li>Los dos están en el Castle on the Sea (Tercer Mar), cerca de la entrada del palacio.</li>
+<li>El <b>Elite Hunter</b> te manda a derrotar a piratas de élite (nivel 1.750).</li>
+<li>El <b>Player Hunter</b> te manda a derrotar a un jugador al azar con PvP activo. Da 20.000 de Beli y mucha experiencia (la wiki dice 50 millones). Hay una espera de unos 10 minutos entre quests y no funciona en servidores privados.</li>
+<li>Derrotar a un enemigo de élite te da un título.</li>
+</ul></div>
+<div class="card"><h2>Cómo conseguir la espada Yama</h2>
+<ul class="pl">
+<li>Hay que derrotar a 20 piratas de élite o jugadores, pero solo cuentan los que mates en quests del Elite Hunter o del Player Hunter.</li>
+<li>Con 20 podés intentar sacar la espada, pero podés morir. Con unos 30 las chances suben a casi 100%.</li>
+<li>Yama es una de las espadas necesarias para la Cursed Dual Katana.</li>
+</ul>
+<p class="aviso">Los números varían según la guía. Los piratas de élite son difíciles, así que vas mejor con amigos.</p></div>
+</section>
+
+<section id="huesos">
+<div class="card"><h2>Cómo conseguir huesos</h2>
+<ul class="pl">
+<li>Matá a Reborn Skeleton, Living Zombie, Demonic Soul, Possessed Mummy o Soul Reaper en el Castillo Embrujado, o a enemigos de un barco embrujado.</li>
+<li>Cada enemigo tiene 50% de darte entre 1 y 3 huesos.</li>
+<li>El Possessed Mummy puede dar de 4 a 6 con 33%, y el Soul Reaper da entre 41 y 43 asegurados.</li>
+<li>El Gravestone (cerca del Death King) también da huesos si rezás de noche.</li>
+</ul></div>
+<div class="card"><h2>Death King: qué comprar</h2>
+<ul class="pl">
+<li><b>Random Surprise (50 huesos):</b> hasta 10 intentos cada 2 horas. Puede dar Beli (6.000 a 30.000), fragmentos (100 a 250), 10 minutos de doble XP, una fruta al azar (8%), Hallow Essence, Fire Essence, Bear Ears o Golden Sunhat.</li>
+<li><b>Reseteo de stats:</b> 150 huesos.</li>
+<li><b>Cambio de raza:</b> 300 huesos.</li>
+<li><b>Títulos:</b> Skeleton (250 huesos), Undead Lord (500) y Death King (2.000).</li>
+<li>El Death King aparece en cada mar: en Middle Town (Primer Mar), en el Cafe de Kingdom of Rose (Segundo Mar) y en el Castillo Embrujado (Tercer Mar).</li>
+</ul></div>
+<div class="card"><h2>Soul Reaper y Hallow Scythe</h2>
+<ul class="pl">
+<li>El Soul Reaper es de nivel 2100, con unos 260.000 de vida.</li>
+<li>Se invoca con la Hallow Essence en el altar de la llama azul, cerca del Death King.</li>
+<li>La Hallow Essence es legendaria y sale de un Random Surprise con poca probabilidad (unos 2,5%).</li>
+<li>La Hallow Scythe se suelta con poca chance. Hay quien necesita vencerlo entre 10 y 20 veces.</li>
+<li>La Fire Essence sirve para el estilo Dragon Talon.</li>
+</ul></div>
+</section>
+
+<section id="islas">
+<div class="card"><h2>Eventos de mar y sus islas</h2>
+<ul class="pl">
+<li><b>Treasure Island:</b> isla de tesoros del Tercer Mar.</li>
+<li><b>Mirage Island:</b> aparece al azar. Mirá la pestaña Mirage y eventos.</li>
+<li><b>Haunted Shipwreck:</b> barco embrujado con enemigos que sueltan huesos.</li>
+</ul></div>
+<div class="card"><h2>Kitsune Island</h2>
+<ul class="pl">
+<li>Aparece en la zona de peligro nivel 6, durante la luna llena.</li>
+<li>El dueño del bote tiene que estar en el bote para que aparezca.</li>
+<li>En el Kitsune Shrine cambiás Azure Embers por premios, como accesorios, Beli, fragmentos y la Kitsune Mask.</li>
+<li>Podés llevar hasta 25 Azure Embers. Ofrecer más aumenta la chance de buenos premios.</li>
+<li>Se pueden juntar Azure Embers durante unos 5 minutos.</li>
+<li>Si la Mirage Island aparece al lado, el santuario no funciona. Alejate de ahí.</li>
+</ul></div>
+<div class="card"><h2>Prehistoric Island y Frozen Dimension</h2>
+<ul class="pl">
+<li><b>Prehistoric Island:</b> aparece en peligro nivel 6. Con un Volcanic Magnet aumenta mucho la chance. Hay un evento donde protegés una reliquia de oleadas de enemigos.</li>
+<li>Una cueva de la isla solo se abre si tenés la raza Draco.</li>
+<li>Se recomienda ir con al menos 2 jugadores.</li>
+<li><b>Frozen Dimension:</b> la más difícil de encontrar. Sirve para invocar al Leviathan, que da el Leviathan Shield y otras cosas.</li>
+</ul>
+<p class="aviso">Estos eventos son difíciles y conviene hacerlos en equipo, con tripulación.</p></div>
+</section>
+
+<section id="dojo">
+<div class="card"><h2>Dragon Dojo (Hydra Island)</h2>
+<ul class="pl">
+<li><b>Dojo Trainer:</b> te da los cinturones del dojo.</li>
+<li><b>Dragon Hunter:</b> hace el Volcanic Magnet. Pide 15 Blaze Embers (de sus quests) y 10 Scrap Metal (los sueltan enemigos como Jungle Pirate y Forest Pirate). Necesitás el cinturón amarillo.</li>
+<li><b>Dragon Wizard:</b> te da la raza Draco después de unas quests.</li>
+<li><b>Uzoth:</b> enseña Dragon Talon.</li>
+<li><b>Dragon Tamer:</b> es un NPC de tienda.</li>
+</ul></div>
+<div class="card"><h2>Para tener en cuenta</h2>
+<ul class="pl">
+<li>Al aparecer la Prehistoric Island, el Volcanic Magnet se pierde y hay que craftearlo de nuevo.</li>
+<li>El Volcanic Magnet no garantiza la isla, solo sube la probabilidad.</li>
+<li>Los requisitos de las quests del dojo pueden cambiar con las actualizaciones.</li>
+</ul></div>
+</section>
+
+<section id="glosario">
+<div class="card"><h2>Glosario del juego</h2>
+<ul class="pl">
+<li><b>Beli:</b> la plata del juego.</li>
+<li><b>Fragmentos:</b> moneda especial para despertar, estilos de pelea y razas.</li>
+<li><b>Maestría (Mastery):</b> experiencia de cada fruta, espada o estilo.</li>
+<li><b>Farmear (grind):</b> repetir quests o enemigos para subir o juntar cosas.</li>
+<li><b>Mob o NPC:</b> enemigo del juego.</li>
+<li><b>Drop:</b> objeto que suelta un enemigo o jefe.</li>
+<li><b>Spawn:</b> cuando algo aparece en el mapa.</li>
+<li><b>Raid:</b> evento por oleadas para despertar frutas.</li>
+<li><b>Despertar (Awakening):</b> mejorar las habilidades de una fruta.</li>
+<li><b>Instinct o Ken:</b> Haki de Observación.</li>
+<li><b>Buso o Aura:</b> Haki de Enhancement.</li>
+<li><b>V2, V3, V4:</b> versiones mejoradas de una raza.</li>
+<li><b>Nivel de peligro:</b> qué tan lejos y difícil es el mar.</li>
+<li><b>PvP:</b> pelea entre jugadores.</li>
+<li><b>Bounty y Honor:</b> puntos de PvP de piratas y marines.</li>
+<li><b>Reroll:</b> cambiar de raza al azar.</li>
+<li><b>Servidor privado:</b> un servidor solo para vos y tus amigos.</li>
+<li><b>Stock:</b> las frutas que vende el vendedor ahora.</li>
+</ul></div>
+</section>
+
+<section id="plan">
+<div class="card"><h2>Mi rutina de juego</h2>
+<p class="small">Armada según los horarios que tenías pensados. Ajustala con tus papás.</p>
+<ul class="pl">
+<li><b>Lunes a viernes, de 12:00 a 18:30:</b> dos bloques de farmeo con pausas de 30 minutos para comer, tomar agua y estirarte.</li>
+<li><b>Sábado, de 9:30 a 22:00:</b> farmeo suave por la mañana, salida con tu familia a las 14:30 (sin celular) y farmeo en equipo a la tarde y noche, con pausas.</li>
+<li><b>Domingo:</b> descanso, o un rato liviano para ordenar ítems y stats.</li>
+</ul></div>
+<div class="card"><h2>Metas</h2>
+<ul class="pl">
+<li>Subir de nivel con la quest activa en tu isla.</li>
+<li>Juntar los 5 millones de Beli para el Instinct V2.</li>
+<li>Hacer la quest del Ciudadano para el sombrero de mosquetero.</li>
+<li>Mirá la pestaña Checklists para ir tildando cada paso.</li>
+</ul>
+<p class="aviso">Hacé pausas, tomá agua y descansá la vista. Es mejor jugar con ganas que jugar de más.</p></div>
+</section>
+</main>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+function num(i){var v=parseFloat($(i).value);return isFinite(v)&&v>=0?v:0}
+function fmt(n){return Math.round(n).toLocaleString("es-UY")}
+function tiempo(h,hd){
+  if(h<=0)return "¡Ya llegaste!";
+  var t=fmt(h*10)/10; var d=hd>0?Math.ceil(h/hd):null;
+  return "<span class='big'>"+(Math.round(h*10)/10).toLocaleString("es-UY")+" horas</span><br>"+(d?"Son unos <b>"+d+" días</b> jugando "+hd+" h por día.":"Poné cuántas horas jugás por día.");
+}
+function calc(){
+  var f=Math.max(0,num("n2")-num("n1")), r=num("rn");
+  var h=r>0?f/r:0;
+  $("r1").innerHTML=r>0?(f<=0?"¡Ya llegaste a esa meta!":tiempo(h,num("hd"))+"<div class='small'>Faltan "+fmt(f)+" niveles. Al final cada nivel cuesta más, así que si tu ritmo baja 30% serían unas "+(Math.round(h/0.7*10)/10).toLocaleString("es-UY")+" horas.</div>"):"Poné cuántos niveles subís por hora.";
+  var fb=Math.max(0,num("b2")-num("b1")), rb=num("bh");
+  var hb=rb>0?fb/rb:0;
+  $("r2").innerHTML=rb>0?(fb<=0?"¡Ya tenés ese Beli!":tiempo(hb,num("bd"))+"<div class='small'>Faltan "+fmt(fb)+" de Beli. Las bestias marinas suelen pagar más por hora que las quests.</div>"):"Poné cuánto Beli ganás por hora.";
+}
+var ISLAS=[
+ [1800,1974,"Tortuga Flotante","Quests del bosque profundo. El Capitán Elefante es jefe de nivel 1875."],
+ [1975,2074,"Castillo Embrujado","Buen lugar para seguir subiendo y para abrir cofres."],
+ [2075,2449,"Mar de las Golosinas","Zona avanzada: Cake Land, chocolate, caramelo. Acá aparece el Rey de la Masa."],
+ [2450,2599,"Tiki Outpost","Zona de niveles altos. Mirá qué pide cada NPC."],[2600,3000,"Más allá","Niveles finales. Los rangos nuevos cambian con las actualizaciones. Mirá qué pide cada NPC."]
+];
+function isla(){
+  var n=num("nv"),h="",tb="<tr><th>Nivel</th><th>Isla</th></tr>";
+  var pick=null;
+  for(var i=0;i<ISLAS.length;i++){var s=ISLAS[i];if(n>=s[0]&&n<=s[1])pick=s;}
+  if(!pick){h=n<1800?"Todavía no estás en este tramo: con menos de 1800 mirá las islas del Tercer Mar de tu nivel.":"Pasaste el último rango que tengo. Mirá las quests nuevas en el juego."}
+  else{var falta=pick[1]+1-n;h="<b>"+pick[2]+"</b><div>"+pick[3]+"</div><div class='small'>Te quedan unos "+fmt(falta)+" niveles ahí antes de pasar a la siguiente zona.</div>"}
+  $("ri").innerHTML=h;
+  for(var j=0;j<ISLAS.length;j++){var q=ISLAS[j];tb+="<tr"+(pick===q?" class='me'":"")+"><td>"+q[0]+" a "+q[1]+"</td><td>"+q[2]+"</td></tr>"}
+  $("tb").innerHTML=tb;
+}
+var JEFES=[["Longma",2000,"Tercer Mar","Su puzzle da la espada Tushita."],["Esqueleto Maldito",2025,"Tercer Mar","Jefe del tramo alto del Tercer Mar."],["Soul Reaper",2100,"Castillo Embrujado","Se invoca con Hallow Essence en el altar del cementerio. Usa la Hallow Scythe."],["Cake Queen",2175,"Cake Land","Suelta la Buddy Sword."],["Cake Prince",2300,"Dimensional Shift (Cake Land)","Hay que matar 500 enemigos en Cake Land y hablar con Drip Mama. Da Pale Scarf, Spikey Trident y 3 niveles."],["Dough King",2300,"Dimensional Shift (Cake Land)","Pide el Cáliz Dulce. Da 6 niveles, 2.000 fragmentos, Fragmento Espejo y Pale Scarf. Tiene más de un millón de vida."],["Rip Indra (forma verdadera)",5000,"Castle on the Sea","Pide tres colores de aura (Snow White, Pure Red y Winter Sky) y activar tres botones. Da Valkyrie Helm y Dark Dagger."]];
+var NIV=[["Dough King",6],["Tyrant of the Skies",6],["Leviathan",5],["Darkbeard",3],["Greybeard",3],["Cake Prince",3],["Rip Indra (forma verdadera)",3],["Order",3],["Bestia marina",1],["Terrorshark",1]];
+function jefes(){
+  var n=num("nj"),h="";
+  JEFES.forEach(function(b){
+    var ok=n>=b[1],falta=b[1]-n;
+    h+="<div class='boss'><b>"+b[0]+"</b> <span class='chip"+(ok?" si":"")+"'>"+(ok?"Ya podés":"Faltan "+fmt(falta)+" niveles")+"</span><div class='small'>Nivel "+fmt(b[1])+" en "+b[2]+"</div><div>"+b[3]+"</div></div>";
+  });
+  $("bj").innerHTML=h;
+  var t="<tr><th>Jefe o evento</th><th>Niveles</th></tr>";
+  NIV.forEach(function(x){t+="<tr><td>"+x[0]+"</td><td>+"+x[1]+"</td></tr>"});
+  $("tl").innerHTML=t;
+}
+var RULES="Sos el asistente de la app Brújula del Tercer Mar, para jugadores de Blox Fruits. Respondé en español rioplatense, con tono amistoso y respuestas cortas (máximo 6 oraciones o una lista corta). Usá solo lo que sabés con seguridad y los datos de abajo. Si no estás seguro, decilo y sugerí confirmarlo con el NPC o la wiki del juego, porque todo cambia con las actualizaciones. No ayudes con scripts, autofarm, trampas ni cuentas ajenas, y nunca pidas contraseñas ni datos personales. ";
+var SUG=["¿A qué isla voy con mi nivel?","¿Cómo consigo la CDK?","¿Cómo gano Beli rápido?","¿Qué fruta me conviene para farmear?"];
+async function iaInit(){
+  var sample=null;
+  try{if(typeof claude!=="undefined")sample=await claude.use("sample")}catch(e){}
+  if(!sample){$("iaMsg").textContent="La IA no está disponible acá. Abrí la app desde Claude para usarla.";$("iaBox").style.display="none";return}
+  var turns=[],busy=false,ctl=null;
+  function bub(r,t){var d=document.createElement("div");d.className="b "+r;d.textContent=t;$("iaChat").appendChild(d);d.scrollIntoView({block:"nearest"});return d}
+  function err(c){return {rate_limited:"Se hicieron muchas preguntas seguidas o llegaste a tu límite de uso. Probá de nuevo más tarde.",not_granted:"Para usar la IA tenés que permitirlo cuando te lo pregunte.",sampling_disabled:"La IA no está disponible en esta cuenta.",session_expired:"Volvé a iniciar sesión en Claude y probá otra vez.",refused:"No puedo ayudar con eso. Probá con otra pregunta de Blox Fruits.",prompt_too_large:"La conversación quedó muy larga. Recargá la página."}[c]||"Algo falló. Probá de nuevo en un rato."}
+  function setBusy(b){busy=b;$("iaGo").disabled
